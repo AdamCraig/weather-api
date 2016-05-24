@@ -27,7 +27,7 @@ gulp.task('concatInterface', function(){
 });
 
 gulp.task('jsBrowserify', ['concatInterface'], function(){
-  return browserify({ entries: ['./js/browser.js'] })
+  return browserify({ entries: ['./tmp/allconcat.js'] })
     .bundle()
     .pipe(source('app.js'))
     .pipe(gulp.dest('./build/js'));
@@ -82,6 +82,7 @@ gulp.task('serve', function() {
   });
   gulp.watch(['js/*.js'], ['jsBuild']);
   gulp.watch(['bower.json'], ['bowerBuild']);
+  gulp.watch(['*.html'], ['htmlBuild']);
 });
 
 gulp.task('jsBuild', ['jsBrowserify', 'jshint'], function(){
@@ -89,5 +90,9 @@ gulp.task('jsBuild', ['jsBrowserify', 'jshint'], function(){
 });
 
 gulp.task('bowerBuild', ['bower'], function(){
+  browserSync.reload();
+});
+
+gulp.task('htmlBuild', ['build'], function(){
   browserSync.reload();
 });
